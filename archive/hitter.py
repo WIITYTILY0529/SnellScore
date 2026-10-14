@@ -3,7 +3,7 @@ from scipy.stats import percentileofscore
 import matplotlib.pyplot as plt
 import numpy as np
 
-df = pd.read_csv('/Users/choiminseok/Desktop/최민석/야구/볼넷의 역설/hitter.csv')
+df = pd.read_csv('C:/Users/choim/choiminseok/Baseball/01_Research/09_SnellScore/data/raw/hitter.csv')
 
 def standardized(series):
     return (series - series.mean())/series.std(ddof=0)
