@@ -1,7 +1,7 @@
 from sklearn.cluster import KMeans
 import pandas as pd
 
-df = pd.read_csv('bb%.csv')
+df = pd.read_csv('data/raw/bb%.csv')
 
 # 사용할 열 선택
 features = df[['bb_percent', 'oz_swing_percent', 'z_swing_percent']]

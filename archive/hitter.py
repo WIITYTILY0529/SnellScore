@@ -3,7 +3,7 @@ from scipy.stats import percentileofscore
 import matplotlib.pyplot as plt
 import numpy as np
 
-df = pd.read_csv('pitcher.csv')
+df = pd.read_csv('data/raw/hitter.csv')
 
 def standardized(series):
     return (series - series.mean())/series.std(ddof=0)
@@ -11,16 +11,16 @@ def standardized(series):
 def scale_20_80(z_scores):
     return 50 + (z_scores*10)
 
-df['bb_percent_z'] = standardized(df['bb_percent'])
+df['bb_percent_z'] = -standardized(df['bb_percent'])
 df['bb_percent_scale'] = scale_20_80(df['bb_percent_z'])
-df['meatball_z'] = -standardized(df['meatball_percent'])
-df['meatball_scale'] = scale_20_80(df['meatball_z'])
-df['snell_score'] = df['bb_percent_scale'] + df['meatball_scale']
-df_filtered = df[(df['bb_percent_scale'] >= 60) & (df['meatball_scale'] >=60)]
-df_filtered = df_filtered.dropna(axis = 0)
+df['oz_swing_z'] = -standardized(df['oz_swing_percent'])
+df['oz_swing_scale'] = scale_20_80(df['oz_swing_z'])
+df['snell_score'] = df['bb_percent_scale'] + df['oz_swing_scale']
+df_filtered = df[(df['bb_percent_scale'] >= 55) & (df['oz_swing_scale'] >=55)]
+df_filtered = df.dropna(axis = 0)
 
-df_filtered = df_filtered[['last_name, first_name', 'year', 'bb_percent', 'bb_percent_scale', 'meatball_percent', 'meatball_scale', 'snell_score']]
-sorted_df = df_filtered.sort_values(by = 'snell_score', ascending= False)
+sorted_df = df_filtered[['last_name, first_name', 'year', 'bb_percent', 'bb_percent_scale', 'oz_swing_percent','oz_swing_scale', 'snell_score']]
+sorted_df.sort_values(by='snell_score', ascending=False, inplace= True)
 
 
 # 선수별로 n년도와 n+1년도 Snell Score 추출
@@ -42,4 +42,9 @@ corr_value = x.corr(y)
 
 print(f"전체 모집단의 Snell Score 상관계수: {corr_value}")
 
-sorted_df.to_csv('snellscorepitcher.csv')
+
+
+'''df1 = sorted_df[sorted_df['last_name, first_name'].str.contains('Soto', na = False)]
+
+print(df1)
+###sorted_df.to_csv('snellscorehitter.csv')'''
