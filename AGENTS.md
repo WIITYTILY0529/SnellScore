@@ -1,12 +1,12 @@
 # AGENTS.md
 
-이 규칙은 `01_Research/09_SnellScore/`에 적용하며 상위 [AGENTS.md](../AGENTS.md)와 함께 따릅니다.
+Rules for AI coding agents working in this repository. When this project is checked out inside its parent research workspace, they are followed together with the workspace-level `AGENTS.md` (not included in this repository).
 
-- 작업 전에 README.md와 변경 대상 파일을 읽고 기존 실행 흐름을 확인합니다.
-- 숫자_이름과 기능별 디렉터리를 유지하고, 이 프로젝트 안에서 필요한 최소 변경만 수행합니다.
-- README.md는 실제 구조와 실행 방법, AGENTS.md는 코드 작성 규칙을 관리합니다.
-- random seed, 데이터 분할, feature, 평가 지표와 실험 파라미터를 요청 없이 바꾸지 않습니다. 기준 분석과 대안 실험을 구분하고 결과를 비교합니다.
-- 기존 파일명·코드 스타일·의존성을 유지하며 요청과 관계없는 리팩터링을 하지 않습니다.
-- 입력 데이터·모델·결과물을 보존하고, 생성 결과는 기존 출력 위치에 저장합니다.
-- 변경 후 관련 tests/를 실행하고 입력·출력 계약을 확인합니다.
-- 검증하지 못한 입력·외부 서비스·실험은 완료된 것으로 보고하지 않습니다.
+- Before starting, read `README.md` and the files you plan to change, and confirm the existing run flow.
+- Keep the existing directory layout and make only the minimal change needed inside this project.
+- `README.md` documents the actual layout and how to run the project; `AGENTS.md` holds the code-writing rules.
+- Do not change random seeds, data splits, features, evaluation metrics, or experiment parameters without a request. Keep the baseline analysis separate from alternative experiments, and compare their results.
+- Keep existing file names, code style, and dependencies, and do not refactor anything unrelated to the request.
+- Preserve input data, models, and results, and save generated output to the existing output locations.
+- After a change, run the related `tests/` and check the input/output contract.
+- Do not report unverified inputs, external services, or experiments as complete.

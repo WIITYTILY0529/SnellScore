@@ -1,17 +1,52 @@
-.DS_Store
+# Virtual environments
 .venv/
 venv/
+env/
+ENV/
+
+# Python bytecode, tool caches, and test reports
 __pycache__/
 *.py[cod]
 .pytest_cache/
-*.egg-info/
-build/
-dist/
+.mypy_cache/
+.ruff_cache/
+.coverage
+.coverage.*
+htmlcov/
+.ipynb_checkpoints/
 
-# Local generated files and large shared data
-*.pyc
-._*
-.env
-.runtime/
+# Python build and packaging artifacts
+/build/
+/dist/
+*.egg-info/
+.eggs/
+
+# IDE, editor, and local agent settings
 .vscode/
+.idea/
+.claude/
+CLAUDE.md
+*.swp
+*~
+
+# Temporary and local-only files
+.runtime/
+*.tmp
+*.log
+*.local
+
+# Large shared data formats
 *.parquet
+
+# Secrets and machine-specific configuration
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# Operating system metadata
+.DS_Store
+._*
+Thumbs.db
+Desktop.ini

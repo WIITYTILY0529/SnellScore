@@ -1,11 +1,12 @@
 # Archived experiments
 
-구조 개편 전 루트에 있던 초기 분석 및 실험 코드를 보존합니다.
+The original exploratory scripts, kept for reference. They are not maintained. Use `scripts/` and `src/snell_score/` for the current analysis.
 
-- `hitter.py`, `pitcher.py`: 절대경로를 사용하던 초기 점수 계산 코드
-- `hitterkmean.py`: 미완성 K-means 실험
-- `train.py`: 연도별 상관관계 계산을 시험한 예제
-- `requirements.txt`: 구조 개편 전 전체 환경 의존성
+| File | Description |
+|---|---|
+| `hitter.py`, `pitcher.py` | First versions of the score calculation |
+| `hitterkmean.py` | Unfinished K-means clustering experiment. It needs `data/raw/bb%.csv`, which is not included, and references undefined helper functions |
+| `train.py` | Toy example of the year-over-year correlation calculation |
+| `requirements.txt` | Full dependency list from the original environment |
 
-현재 실행 진입점은 루트의 `scripts/`를 사용합니다.
-
+The scripts read input paths relative to the repository root, so run them from there (for example `python archive/hitter.py`).

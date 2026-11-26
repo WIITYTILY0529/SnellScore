@@ -3,15 +3,15 @@ import pandas as pd
 
 df = pd.read_csv('data/raw/bb%.csv')
 
-# 사용할 열 선택
+# Select the feature columns
 features = df[['bb_percent', 'oz_swing_percent', 'z_swing_percent']]
 
-# K-means 클러스터링
-kmeans = KMeans(n_clusters=3, random_state=42)  # 3개의 클러스터로 나누기
+# K-means clustering
+kmeans = KMeans(n_clusters=3, random_state=42)  # Split into 3 clusters
 df['cluster'] = kmeans.fit_predict(features)
 
-# 특정 클러스터 선택 (예: 조건에 맞는 클러스터 찾기)
-filtered_df = df[df['cluster'] == 2]  # 클러스터 번호는 데이터에 따라 다름
+# Select a specific cluster (e.g. the one that matches the criteria)
+filtered_df = df[df['cluster'] == 2]  # Cluster numbers depend on the data
 print(filtered_df)
 
 

@@ -1,76 +1,81 @@
 # SnellScore
 
-볼넷 성향과 존 판단 관련 지표를 20–80 스케일로 변환해 타자와 투수의 Snell Score를 계산하는 연구 프로젝트입니다.
+A small research project that rates MLB hitters and pitchers on walk tendency and zone-related plate-discipline metrics. Each component is converted to the 20–80 scouting scale, and the components are summed into a single **Snell Score**.
 
-## 지표
+The name nods to Blake Snell, a pitcher known for combining high walk rates with hard-to-hit pitches. He ranks near the top of the pitcher table.
 
-- 타자: 낮은 볼넷 비율과 낮은 존 밖 스윙 비율을 결합합니다.
-- 투수: 높은 볼넷 비율과 낮은 meatball 비율을 결합합니다.
-- 각 구성 요소는 모집단 평균 50, 표준편차 10인 20–80 스케일로 변환합니다.
+## Metric definition
 
-현재 정의는 기존 코드의 계산 방식을 정리한 것이며, 지표의 야구적 해석과 필터 기준은 추가 검증이 필요합니다.
+| Player type | Component 1 | Component 2 |
+|---|---|---|
+| Hitter | Walk rate (`bb_percent`), **lower** is better | Out-of-zone swing rate (`oz_swing_percent`), **lower** is better |
+| Pitcher | Walk rate (`bb_percent`), **higher** is better | Meatball rate (`meatball_percent`), **lower** is better |
 
-## 구조
+- Each component is standardized with population z-scores over all player-seasons in the input file, then mapped to the 20–80 scale (`50 + 10 × z`).
+- `snell_score` is the sum of the two scaled components, so 100 is average.
+- The pitcher table keeps only player-seasons where **both** scaled components are at least 60.
+- Each script also reports the year-over-year correlation of Snell Score between consecutive seasons of the same player.
+
+These definitions formalize the logic of the original exploratory code. The baseball interpretation of the metric and the filter thresholds have not been validated further.
+
+## Repository layout
 
 ```text
-data/raw/          원본 입력 CSV
-src/snell_score/   재사용 가능한 계산 로직
-scripts/           분석 실행 진입점
-outputs/tables/    생성된 점수표
-tests/             핵심 계산 테스트
-archive/           구조 개편 전 실험 코드와 의존성 파일
+data/raw/          Input CSVs (season-level plate-discipline metrics, 2015–2024)
+src/snell_score/   Reusable scoring functions
+scripts/           Analysis entry points
+outputs/tables/    Generated score tables
+tests/             Unit tests for the scoring logic
+archive/           Original exploratory scripts, kept for reference
 ```
 
-원본 데이터는 삭제하거나 수정하지 않습니다.
+See [`data/README.md`](data/README.md) for the input data and [`archive/README.md`](archive/README.md) for the archived scripts.
 
-## 설치
+## Installation
 
-```powershell
+Requires Python 3.10 or newer.
+
+```bash
+python -m venv .venv
+# Windows: .venv\Scripts\activate    macOS/Linux: source .venv/bin/activate
 python -m pip install -e ".[dev]"
 ```
 
-## 실행
+A fully pinned Windows environment is also provided:
 
-프로젝트 루트에서 실행합니다.
+- `requirements-windows.txt` lists the direct dependencies, including notebook and archive-script extras.
+- `requirements-windows.lock.txt` records the exact versions used for the published results.
 
 ```powershell
+python -m pip install -r requirements-windows.lock.txt
+```
+
+## Usage
+
+Run the scripts from the repository root:
+
+```bash
 python scripts/run_hitter_analysis.py
 python scripts/run_pitcher_analysis.py
 ```
 
-출력은 각각 다음 위치에 저장됩니다.
+They write:
 
 - `outputs/tables/snellscorehitter.csv`
 - `outputs/tables/snellscorepitcher.csv`
 
-## 테스트
+The library functions can also be used directly:
 
-```powershell
+```python
+import pandas as pd
+from snell_score import add_hitter_scores, year_over_year_correlation
+
+scored = add_hitter_scores(pd.read_csv("data/raw/hitter.csv"))
+print(year_over_year_correlation(scored))
+```
+
+## Tests
+
+```bash
 pytest
 ```
-
-## Windows 가상환경
-
-이 폴더 전용 Python 3.12 `.venv`와 의존성을 구성했습니다. PowerShell에서 사용합니다.
-
-```powershell
-Set-Location '<BASEBALL_ROOT>\01_Research\09_SnellScore'
-. .\.venv\Scripts\Activate.ps1
-python -m pip check
-```
-
-활성화 없이 `.\.venv\Scripts\python.exe`로 실행할 수도 있습니다.
-VS Code에서는 이 프로젝트 폴더를 열고 `.venv` 인터프리터/노트북 커널을 선택합니다.
-`requirements-windows.txt`는 Windows 의존성, `requirements-windows.lock.txt`는 실제 설치 버전입니다.
-환경 재생성은 이 프로젝트 폴더에서 실행합니다.
-
-```powershell
-python -m venv .venv
-.\.venv\Scripts\python.exe -m pip install -r requirements-windows.txt
-```
-
-경로를 수정했지만 다음 입력은 현재 없습니다. 원본을 아래 위치에 준비해야 관련 실험이 실행됩니다.
-
-- `data/raw/bb%.csv`
-
-새 환경의 로컬 모듈 경로 등록은 [공통 환경 설정](../../README.md#프로젝트별-환경-설정)을 따릅니다.

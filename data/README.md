@@ -1,11 +1,12 @@
 # Data
 
-`raw/`에는 구조 개편 전부터 존재하던 원본 타자·투수 CSV를 그대로 보존합니다.
+`raw/` holds the original hitter and pitcher input files, kept unchanged.
 
-| 파일 | 역할 |
-|---|---|
-| `raw/hitter.csv` | 타자 시즌별 plate-discipline 지표 |
-| `raw/pitcher.csv` | 투수 시즌별 plate-discipline 지표 |
+| File | Contents | Rows | Seasons |
+|---|---|---|---|
+| `raw/hitter.csv` | Hitter season-level plate-discipline metrics (`bb_percent`, `z_swing_percent`, `oz_swing_percent`) | 1,375 | 2015–2024 |
+| `raw/pitcher.csv` | Pitcher season-level metrics (`k_percent`, `bb_percent`, `meatball_percent`) | 1,106 | 2015–2024 |
 
-원본 파일을 덮어쓰지 않고 계산 결과는 `../outputs/tables/`에 저장합니다.
+Each row is one player-season, identified by `last_name, first_name`, `player_id`, and `year`. The column layout matches Baseball Savant (Statcast) custom leaderboard exports. Rates are percentages.
 
+Raw files are never overwritten. Computed results are written to `../outputs/tables/`.
